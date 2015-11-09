@@ -21,7 +21,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 import UIKit
 #else
 import AppKit
@@ -34,6 +34,9 @@ public class LayoutConstraint: NSLayoutConstraint {
     
     internal var snp_constraint: Constraint? = nil
     
+    public var snp_location: SourceLocation? {
+        return snp_constraint?.location
+    }
 }
 
 internal func ==(left: LayoutConstraint, right: LayoutConstraint) -> Bool {

@@ -27,11 +27,13 @@ class EditWaypointViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.view.backgroundColor = .whiteColor()
-        self.title = waypoint.title
+        self.title = waypoint.name
     
         setupViews()
         
-        addPin(waypoint.title, latitude: CLLocationDegrees(waypoint.latitude), longitude: CLLocationDegrees(waypoint.longitude))
+        addPin(waypoint.name!,
+            latitude: CLLocationDegrees(waypoint.latitude!),
+            longitude: CLLocationDegrees(waypoint.longitude!))
     }
     
     override func didReceiveMemoryWarning() {
@@ -149,7 +151,7 @@ extension EditWaypointViewController {
 
 extension EditWaypointViewController: MKMapViewDelegate {
     
-    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         saveWaypoint()
     }
     
@@ -187,7 +189,7 @@ extension EditWaypointViewController: UISearchBarDelegate {
         
         if searchBar.text != "" {
             // Only search when not empty string
-            searchForPlaces(searchBar.text)
+            searchForPlaces(searchBar.text!)
         }
         
     }

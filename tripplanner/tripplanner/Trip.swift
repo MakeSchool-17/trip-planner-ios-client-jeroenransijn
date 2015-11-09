@@ -1,16 +1,17 @@
 //
-//  trip.swift
+//  Trip.swift
 //  tripplanner
 //
-//  Created by Jeroen Ransijn on 14/10/15.
-//  Copyright (c) 2015 JeroenRansijn. All rights reserved.
+//  Created by Jeroen Ransijn on 08/11/15.
+//  Copyright © 2015 JeroenRansijn. All rights reserved.
 //
 
-import UIKit
+import Foundation
+import CoreData
 
-class Trip: AnyObject {
-    
-    var title: String!
-    var waypoints = []
-    
+
+class Trip: NSManagedObject {
+
+// Insert code here to add functionality to your managed object subclass
+
 }

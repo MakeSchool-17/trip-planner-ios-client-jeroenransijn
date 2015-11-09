@@ -19,21 +19,23 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         self.title = "Planned trips"
-        populateFakeData()
+        
+        
+//        populateFakeData()
         setupViews()
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        trips = CoreDataHelper.allTrips()
+        tableView.reloadData()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    func populateFakeData() {
-        var trip = Trip()
-        trip.title = "San Francisco"
-        trips.append(trip)
-    }
-
 
 }
 
@@ -74,7 +76,7 @@ extension ViewController {
 extension ViewController {
     
     func onTapRightBarButton() {
-        var wrapper = UINavigationController(rootViewController: AddTripViewController())
+        let wrapper = UINavigationController(rootViewController: AddTripViewController())
         
         self.navigationController?.presentViewController(wrapper, animated: true, completion: nil)
     }
@@ -90,7 +92,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return trips.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -101,7 +103,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell = TripTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TripCell")
         }
         
-        cell!.textLabel?.text = "Trip \(indexPath.row)"
+        
+        cell!.textLabel?.text = self.trips[indexPath.row].name
         
         return cell!
     }
@@ -110,10 +113,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        var tripViewController = TripViewController()
+        let tripViewController = TripViewController()
         
         // TODO: make this dynamic
-        tripViewController.trip = trips[0]
+        tripViewController.trip = trips[indexPath.row]
         
         self.navigationController?.pushViewController(tripViewController, animated: true)
         

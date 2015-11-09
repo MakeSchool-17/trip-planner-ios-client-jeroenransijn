@@ -65,12 +65,16 @@ extension AddTripViewController {
         
         self.view.addSubview(titleTextField)
         
-        
         titleTextField.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self.snp_topLayoutGuideBottom).offset(20)
             make.left.equalTo(self.view.snp_leftMargin)
             make.right.equalTo(self.view.snp_rightMargin)
         }
+    }
+    
+    func saveTrip() {
+        let tripName = titleTextField.text!
+        CoreDataHelper.saveTrip(tripName)
     }
     
 }
@@ -80,6 +84,9 @@ extension AddTripViewController {
 extension AddTripViewController {
     
     func onTapRightBarButton() {
+        
+        saveTrip()
+        
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     

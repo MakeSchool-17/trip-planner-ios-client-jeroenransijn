@@ -20,10 +20,17 @@ class TripViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         self.view.backgroundColor = .whiteColor()
-        self.title = trip.title
+        self.title = trip.name
         
-        setupFakeData()
         setupViews()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        waypoints = CoreDataHelper.allWaypoints(trip)
+        
+        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -31,15 +38,6 @@ class TripViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setupFakeData() {
-        var waypoint = Waypoint()
-        
-        waypoint.title = "Make School"
-        waypoint.latitude = Float(37.77)
-        waypoint.longitude = Float(-122.42)
-        
-        waypoints.append(waypoint)
-    }
     
 }
 
@@ -80,7 +78,9 @@ extension TripViewController {
 extension TripViewController {
     
     func onTapRightBarButton() {
-        let wrapper = UINavigationController(rootViewController: AddWaypointViewController())
+        let addWaypointVC = AddWaypointViewController()
+        addWaypointVC.trip = trip
+        let wrapper = UINavigationController(rootViewController: addWaypointVC)
         self.navigationController?.presentViewController(wrapper, animated: true, completion: nil)
     }
     
@@ -95,7 +95,7 @@ extension TripViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return waypoints.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -106,7 +106,7 @@ extension TripViewController: UITableViewDelegate, UITableViewDataSource {
             cell = TripTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TripCell")
         }
         
-        cell!.textLabel?.text = "Waypoint \(indexPath.row)"
+        cell!.textLabel?.text = waypoints[indexPath.row].name
         
         return cell!
     }
@@ -115,9 +115,9 @@ extension TripViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        var editWaypointViewController = EditWaypointViewController()
+        let editWaypointViewController = EditWaypointViewController()
         
-        editWaypointViewController.waypoint = self.waypoints[0]
+        editWaypointViewController.waypoint = self.waypoints[indexPath.row]
         
         self.navigationController?.pushViewController(editWaypointViewController, animated: true)
     }

@@ -22,6 +22,7 @@ class AddWaypointViewController: UIViewController {
     var pointAnnotation: MKPointAnnotation!
     var pinAnnotationView: MKPinAnnotationView!
     var annotation: MKAnnotation!
+    var trip: Trip!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,6 +106,7 @@ extension AddWaypointViewController {
 extension AddWaypointViewController {
     
     func onTapRightBarButton() {
+        saveWaypoint()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -145,7 +147,7 @@ extension AddWaypointViewController {
         
         self.pinAnnotationView = MKPinAnnotationView(annotation: self.pointAnnotation, reuseIdentifier: nil)
         
-        let detailButton: UIButton = UIButton.buttonWithType(UIButtonType.ContactAdd) as! UIButton
+        let detailButton: UIButton = UIButton(type: UIButtonType.ContactAdd)
         self.pinAnnotationView.canShowCallout = true
         self.pinAnnotationView.userInteractionEnabled = true
         self.pinAnnotationView.rightCalloutAccessoryView = detailButton
@@ -158,6 +160,10 @@ extension AddWaypointViewController {
     }
     
     func saveWaypoint() {
+        CoreDataHelper.saveWaypoint(self.trip,
+            latitude: Float(self.pointAnnotation.coordinate.latitude),
+            longitude: Float(self.pointAnnotation.coordinate.longitude),
+            name: self.pointAnnotation.title!)
         // TODO: Implement waypoint save
         self.navigationController?.popViewControllerAnimated(true)
     }
@@ -167,11 +173,11 @@ extension AddWaypointViewController {
 
 extension AddWaypointViewController: MKMapViewDelegate {
     
-    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         saveWaypoint()
     }
     
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView! {
         return self.pinAnnotationView
     }
     
@@ -232,7 +238,7 @@ extension AddWaypointViewController: UISearchBarDelegate {
         
         if searchBar.text != "" {
             // Only search when not empty string
-            searchForPlaces(searchBar.text)
+            searchForPlaces(searchBar.text!)
         }
         
     }
