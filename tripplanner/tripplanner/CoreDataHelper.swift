@@ -48,11 +48,18 @@ class CoreDataHelper {
     static func saveWaypoint(trip: Trip, latitude: Float, longitude: Float, name: String) {
         let waypoint: Waypoint = NSEntityDescription.insertNewObjectForEntityForName("Waypoint", inManagedObjectContext: managedObjectContext) as! Waypoint
         
+        print("saveWaypoint called")
+        
         waypoint.name = name
         waypoint.longitude = longitude
         waypoint.latitude = latitude
         waypoint.trip = trip
         
+        saveContext()
+    }
+    
+    static func deleteWaypoint(waypoint: Waypoint) {
+        managedObjectContext.deleteObject(waypoint)
         saveContext()
     }
     

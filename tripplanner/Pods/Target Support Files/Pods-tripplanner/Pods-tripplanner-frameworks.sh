@@ -84,8 +84,12 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods-tripplanner/Alamofire.framework"
   install_framework "Pods-tripplanner/SnapKit.framework"
+  install_framework "Pods-tripplanner/SwiftyJSON.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods-tripplanner/Alamofire.framework"
   install_framework "Pods-tripplanner/SnapKit.framework"
+  install_framework "Pods-tripplanner/SwiftyJSON.framework"
 fi

@@ -122,4 +122,17 @@ extension TripViewController: UITableViewDelegate, UITableViewDataSource {
         self.navigationController?.pushViewController(editWaypointViewController, animated: true)
     }
     
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+
+            CoreDataHelper.deleteWaypoint(waypoints[indexPath.row])
+            waypoints.removeAtIndex(indexPath.row)
+            
+            tableView.beginUpdates()
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            tableView.endUpdates()
+
+        }
+    }
+    
 }

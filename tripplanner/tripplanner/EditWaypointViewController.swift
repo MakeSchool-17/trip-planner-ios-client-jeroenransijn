@@ -14,7 +14,7 @@ class EditWaypointViewController: UIViewController {
     var waypoint: Waypoint!
     var rightBarButton: UIBarButtonItem!
     var tableView: UITableView!
-    var searchBar: UISearchBar!
+//    var searchBar: UISearchBar!
     var mapView: MKMapView!
     var localSearchRequest: MKLocalSearchRequest!
     var localSearch: MKLocalSearch!
@@ -50,19 +50,17 @@ class EditWaypointViewController: UIViewController {
 extension EditWaypointViewController {
     
     func setupViews() {
-        setupSearchBar()
+        setupNavigationbar()
         setupMapView()
     }
     
     func setupMapView() {
         mapView = MKMapView()
         
-        mapView.delegate = self
-        
         self.view.addSubview(mapView)
         
         mapView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(self.searchBar.snp_bottom)
+            make.top.equalTo(self.view.snp_top)
             make.left.equalTo(self.view.snp_left)
             make.right.equalTo(self.view.snp_right)
             make.bottom.equalTo(self.view.snp_bottom)
@@ -76,28 +74,18 @@ extension EditWaypointViewController {
     }
     
     func setupNavigationbar() {
-        rightBarButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Save, target: self, action: Selector("onTapRightBarButton"))
+        rightBarButton = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.Done, target: self, action: Selector("onTapDelete"))
         
+        rightBarButton.tintColor = .redColor()
+
         self.navigationItem.rightBarButtonItem = rightBarButton
     }
     
-    func setupSearchBar() {
-        searchBar = UISearchBar()
+    func onTapDelete() {
+        CoreDataHelper.deleteWaypoint(waypoint)
         
-        searchBar.delegate = self
-        
-        searchBar.placeholder = "Search locations"
-        
-        self.view.addSubview(searchBar)
-        
-        searchBar.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(self.snp_topLayoutGuideBottom)
-            make.left.equalTo(self.view.snp_left)
-            make.right.equalTo(self.view.snp_right)
-        }
-        
+        self.navigationController?.popViewControllerAnimated(true)
     }
-    
 }
 
 
@@ -140,58 +128,4 @@ extension EditWaypointViewController {
         let region = MKCoordinateRegionMakeWithDistance(self.pointAnnotation.coordinate, CLLocationDistance(1000), CLLocationDistance(1000))
         self.mapView.setRegion(region, animated: true)
     }
-    
-    func saveWaypoint() {
-        // TODO: Implement waypoint save
-        self.navigationController?.popViewControllerAnimated(true)
-    }
-}
-
-// MARK: Map delegate
-
-extension EditWaypointViewController: MKMapViewDelegate {
-    
-    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        saveWaypoint()
-    }
-    
-//    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
-//        return self.pinAnnotationView
-//    }
-    
-}
-
-// MARK: Search
-
-extension EditWaypointViewController: UISearchBarDelegate {
-    
-
-    func resetSearch() {
-        //        sections = allSections
-        //        updateSectionTitles()
-        //        tableView.reloadData()
-    }
-    
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        searchBar.showsCancelButton = true
-    }
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        searchBar.text = ""
-        resetSearch()
-        searchBar.showsCancelButton = false
-        searchBar.resignFirstResponder()
-    }
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchBar.showsCancelButton = false
-        searchBar.resignFirstResponder()
-        
-        if searchBar.text != "" {
-            // Only search when not empty string
-            searchForPlaces(searchBar.text!)
-        }
-        
-    }
-    
 }
