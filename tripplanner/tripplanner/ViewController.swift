@@ -122,4 +122,18 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            
+            CoreDataHelper.deleteTrip(trips[indexPath.row])
+            trips.removeAtIndex(indexPath.row)
+            
+            tableView.beginUpdates()
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            tableView.endUpdates()
+            
+        }
+    }
+
+    
 }

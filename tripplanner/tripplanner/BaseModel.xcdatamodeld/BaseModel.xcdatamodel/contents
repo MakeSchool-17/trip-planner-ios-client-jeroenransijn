@@ -2,7 +2,7 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15A284" minimumToolsVersion="Xcode 4.3">
     <entity name="Trip" representedClassName=".Trip" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="waypoints" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Waypoint" inverseName="trip" inverseEntity="Waypoint" syncable="YES"/>
+        <relationship name="waypoints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Waypoint" inverseName="trip" inverseEntity="Waypoint" syncable="YES"/>
     </entity>
     <entity name="Waypoint" representedClassName=".Waypoint" syncable="YES">
         <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -12,6 +12,6 @@
     </entity>
     <elements>
         <element name="Trip" positionX="-270" positionY="-21" width="128" height="73"/>
-        <element name="Waypoint" positionX="-54" positionY="-9" width="128" height="103"/>
+        <element name="Waypoint" positionX="-54" positionY="-40" width="128" height="103"/>
     </elements>
 </model>

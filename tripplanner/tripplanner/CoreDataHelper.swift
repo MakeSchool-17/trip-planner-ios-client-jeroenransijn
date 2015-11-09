@@ -31,6 +31,11 @@ class CoreDataHelper {
         saveContext()
     }
     
+    static func deleteTrip(trip: Trip) {
+        managedObjectContext.deleteObject(trip)
+        saveContext()
+    }
+    
     static func allTrips() -> [Trip] {
         let fetchRequest = NSFetchRequest(entityName: "Trip")
         
